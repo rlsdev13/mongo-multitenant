@@ -19,7 +19,7 @@ export class TenantService {
         try {
             return await this.modelTenant.find( query );
         } catch (error) {
-            throw new InternalServerErrorException;
+            throw new InternalServerErrorException(error);
         }
     }
 
