@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Tenant } from './tenant.model';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Model, Connection } from 'mongoose';
+import { Tenant, TenantSchema } from './tenant.model';
 import { CreateTenantDto } from './dtos/createTenant.dto';
 import { UpdateTenantDto } from './dtos/updateTenant.dto';
 
@@ -9,7 +9,8 @@ import { UpdateTenantDto } from './dtos/updateTenant.dto';
 export class TenantService {
 
     constructor(
-        @InjectModel(Tenant.name) private modelTenant : Model<Tenant>
+        @InjectModel(Tenant.name) private modelTenant : Model<Tenant>,
+        @InjectConnection() private connection : Connection
     ){}
 
     async getAllTenants() : Promise<Tenant[]>{
@@ -17,6 +18,9 @@ export class TenantService {
             isDeleted : false
         }
         try {
+            const conec = this.connection.useDb('prueba_multi_mongoose');
+            conec.model('prueba_multi', TenantSchema );
+            
             return await this.modelTenant.find( query );
         } catch (error) {
             throw new InternalServerErrorException(error);
