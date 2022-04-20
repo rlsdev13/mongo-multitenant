@@ -1,0 +1,28 @@
+@host = http://localhost:3000
+@id = 6260441d78ab898b90688744
+
+
+### Get all tenants 
+GET {{host}}/tenant
+
+### Get tenant by id
+GET {{host}}/tenant/{{id}}
+
+### Create tenant
+Post {{host}}/tenant
+Content-Type: application/json
+
+{
+    "nombre" : "tenant1"
+}
+
+### Update tenant
+PUT {{host}}/tenant/{{id}}
+Content-Type: application/json
+
+{
+    "nombre" : "tenant1Update"
+}
+
+### Delete update
+DELETE {{host}}/tenant/{{id}}
